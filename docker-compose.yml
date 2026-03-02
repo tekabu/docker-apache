@@ -30,4 +30,4 @@ networks:
   # In NPM, set the proxy host to: http://capcsi-apache:80
   npm_proxy:
     external: true
-    name: npm_proxy
+    name: nginx-proxy-manager
