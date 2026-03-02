@@ -1,0 +1,33 @@
+services:
+  apache:
+    build:
+      context: ./apache
+      dockerfile: Dockerfile
+    container_name: capcsi-apache
+    restart: unless-stopped
+    volumes:
+      # Web application source — adjust this path to your actual app location on the host
+      - /home/sysadmin/web/capcsi.communify.ph:/var/www/public_html
+    environment:
+      TZ: Asia/Manila
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/test.html"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks:
+      - npm_proxy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  # Must match the network name used by your Nginx Proxy Manager instance.
+  # To check: docker network ls | grep npm
+  # In NPM, set the proxy host to: http://capcsi-apache:80
+  npm_proxy:
+    external: true
+    name: npm_proxy
