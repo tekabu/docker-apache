@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libicu-dev \
         libonig-dev \
         curl \
+        default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # ── PHP extensions required by CodeIgniter 3 ─────────────────────────────────
