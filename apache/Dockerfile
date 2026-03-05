@@ -1,4 +1,4 @@
-FROM php:7.3-apache
+FROM php:8.0.28-apache
 
 # ── System dependencies ───────────────────────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -15,8 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # ── PHP extensions required by CodeIgniter 3 ─────────────────────────────────
 RUN docker-php-ext-configure gd \
-        --with-freetype-dir=/usr \
-        --with-jpeg-dir=/usr \
+        --with-freetype \
+        --with-jpeg \
     && docker-php-ext-install -j"$(nproc)" \
         pdo_mysql \
         mysqli \
