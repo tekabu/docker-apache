@@ -10,22 +10,29 @@
     RemoteIPTrustedProxy 10.0.0.0/8
     RemoteIPTrustedProxy 192.168.0.0/16
 
+    # ── Document root ─────────────────────────────────────────────────────────
     <Directory /var/www/public_html>
         Options -Indexes -MultiViews +FollowSymLinks
-        AllowOverride All
+        AllowOverride None
         Require all granted
 
+        # ── CodeIgniter 3 routing ─────────────────────────────────────────────
         RewriteEngine On
         RewriteBase /
 
-        RewriteRule ^(system|application) - [F,L]
+        # Block direct URI access to CI internals; let index.php handle them
+        RewriteCond %{REQUEST_URI} ^/system [NC]
+        RewriteRule ^(.*)$ /index.php?/$1 [L]
 
-        RewriteCond %{REQUEST_FILENAME} -f [OR]
-        RewriteCond %{REQUEST_FILENAME} -d
-        RewriteRule ^ - [L]
+        RewriteCond %{REQUEST_URI} ^/application [NC]
+        RewriteRule ^(.*)$ /index.php?/$1 [L]
 
-        RewriteRule ^ index.php [L]
+        # Standard CI front-controller routing
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^(.*)$ index.php?/$1 [L]
     </Directory>
+
     # ── Compression ───────────────────────────────────────────────────────────
     <IfModule mod_deflate.c>
         AddOutputFilterByType DEFLATE text/html text/plain text/xml \

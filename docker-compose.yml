@@ -3,11 +3,11 @@ services:
     build:
       context: ./apache
       dockerfile: Dockerfile
-    container_name: capcsi-apache
+    container_name: educaitph-apache
     restart: unless-stopped
     volumes:
       # Web application source — adjust this path to your actual app location on the host
-      - /home/sysadmin/web/capcsi.communify.ph:/var/www/public_html
+      - /home/sysadmin/web/educaitph.com:/var/www/public_html
     environment:
       TZ: Asia/Manila
     healthcheck:
